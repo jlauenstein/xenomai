@@ -1,6 +1,12 @@
 #!/bin/bash
 #
 # Copyright (c) Siemens AG, 2014-2018
+#
+# Authors: J.Lauenstein
+#
+# This work is licensed under the terms of the GNU GPL, version 2.  See
+# the COPYING file in the top-level directory.
+#
 
 set -x
 # set -e
@@ -54,6 +60,13 @@ case $TARGET in
         XENO_OPTS=("--build=i686-pc-linux-gnu" "--host=arm-linux-gnueabihf" "CC=arm-linux-gnueabihf-gcc" \
                    "CFLAGS=-march=armv7-a -mfpu=vfp3" "LDFLAGS=-march=armv7-a -mfpu=vfp3")
         ;;
+    arm64)
+        sudo apt-get install -qq gcc-aarch64-linux-gnu
+        CROSS_COMPILE=aarch64-linux-gnu-
+        XENO_ARCH=arm64
+        XENO_OPTS=("--build=i686-pc-linux-gnu" "--host=aarch64-linux-gnu"  "CC=aarch64-linux-gnu-gcc" \
+                   "CFLAGS=-mtune=cortex-a53" "LDFLAGS=-mtune=cortex-a53")
+        ;;
     *)
         echo "===== Error TARGET: $TARGET ====="
         exit 1
@@ -61,13 +74,13 @@ case $TARGET in
 esac
 
 
-build_kernel "noipipe"
+# build_kernel "noipipe"
 
 build_kernel "ipipe"
 
 ./scripts/prepare-kernel.sh --arch=$XENO_ARCH --verbose --linux=ci/ipipe
 
-build_kernel "xeno"
+# build_kernel "xeno"
 
 build_xeno "${XENO_OPTS[@]}"
 

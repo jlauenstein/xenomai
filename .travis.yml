@@ -1,12 +1,18 @@
+#
+# Copyright (c) Siemens AG, 2014-2018
+#
+# Authors: J.Lauenstein
+#
 # This work is licensed under the terms of the GNU GPL, version 2.  See
 # the COPYING file in the top-level directory.
 #
 
 env:
   matrix:
-    - TARGET=x86
-    - TARGET=i386
+#    - TARGET=x86
+#    - TARGET=i386
     - TARGET=arm
+    - TARGET=arm64
 
 language: c
 
